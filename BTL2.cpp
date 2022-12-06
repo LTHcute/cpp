@@ -6,6 +6,23 @@ struct Lop
     char maLop[50], tenLop[50];
     int soSinhVien;
 };
+// khai bao struct khoa
+struct Khoa
+{
+    char maKhoa[50], tenKhoa[50];
+};
+
+// khai bao struct sinh vien
+struct SinhVien
+{
+    char maSinhVien[20], hoTen[50], SDT[15], diaChi[50];
+    int tuoi, gioiTinh;
+    float diemTrungBinh;
+    Lop lop;
+    Khoa khoa;
+};
+
+
 // struct node lớp
 struct nodeLop
 {
@@ -113,14 +130,7 @@ void hienDSLop(ListLop dsl)
 }
 // khai báo struct khoa
 
-struct SinhVien
-{
-    char maSinhVien[20], hoTen[50], SDT[15], diaChi[50];
-    int tuoi, gioiTinh;
-    float diemTrungBinh;
-    // Lop l;
-    // Khoa k;
-};
+
 struct nodeSV
 {
     SinhVien data;
@@ -161,8 +171,6 @@ void nhap1SV(SinhVien &sv)
     cin >> sv.gioiTinh;
     cout << "Nhap tuoi sinh vien:";
     cin >> sv.tuoi;
-    // cout << "Nhap khoa sinh vien:";
-    // cin>> sv.k;
     cin.ignore();
     cout << "Nhap so dien thoai:";
     gets(sv.SDT);
@@ -170,6 +178,19 @@ void nhap1SV(SinhVien &sv)
     gets(sv.diaChi);
     cout << "Nhap diem trung binh:";
     cin >> sv.diemTrungBinh;
+  
+    cin.ignore();
+    cout << "Nhap ma khoa sinh vien:";
+    gets(sv.khoa.maKhoa);
+    cout << "Nhap ten khoa sinh vien:";
+    gets(sv.khoa.tenKhoa);
+    
+    cout<<"Nhap ma lop:";
+    gets(sv.lop.maLop);
+    cout<<"Nhap ten lop:";
+    gets(sv.lop.tenLop);
+    sv.lop.soSinhVien++;
+    cin.ignore();
 }
 void hien1SV(SinhVien sv)
 {
@@ -184,12 +205,14 @@ void hien1SV(SinhVien sv)
         cout << left << setw(12) << "Nu";
     }
 
-    cout << left << setw(15) << sv.tuoi;
-    // cout << left<< setw(12)<< sv.l;
-    // cout << left<< setw(12)<< sv.k;
+    cout << left << setw(8) << sv.tuoi;
     cout << left << setw(15) << sv.SDT;
     cout << left << setw(15) << sv.diaChi;
-    cout << left << setw(15) << sv.diemTrungBinh;
+    cout << left << setw(18) << sv.diemTrungBinh;
+    cout << left<< setw(15)<< sv.khoa.maKhoa;
+    cout << left<< setw(15)<< sv.khoa.tenKhoa;
+    cout << left<< setw(15)<< sv.lop.maLop;
+    cout << left<< setw(15)<< sv.lop.tenLop;
 }
 void themVaoDauDSSV(ListSV &dssv, nodeSV *p)
 {
@@ -237,10 +260,14 @@ void tieuDeSV()
     cout << left << setw(15) << "Ma Sinh Vien";
     cout << left << setw(20) << "Ho Ten";
     cout << left << setw(12) << "Gioi Tinh";
-    cout << left << setw(15) << "Tuoi";
+    cout << left << setw(8) << "Tuoi";
     cout << left << setw(15) << "SDT";
     cout << left << setw(15) << "Dia Chi";
-    cout << left << setw(15) << "Diem Trung Binh";
+    cout << left << setw(18) << "Diem Trung Binh";
+    cout << left << setw(15) << "Ma khoa";
+    cout << left << setw(15) << "Ten khoa";
+    cout << left << setw(15) << "Ma lop";
+    cout << left << setw(15) << "Ten lop";
     cout << endl;
 }
 void hienDSSV(ListSV dssv)
@@ -473,10 +500,7 @@ void chucNangSV()
         }
     }
 }
-struct Khoa
-{
-    char maKhoa[50], tenKhoa[50];
-};
+
 struct nodeKhoa
 {
     Khoa data;
@@ -625,21 +649,21 @@ int main()
     // nhapDSLop(dsl);
     // hienDSLop(dsl);
     // Khoa k;
-    Khoa them;
-    nodeKhoa*p;
-    initKhoa(dsk);
-    nhapDSKhoa(dsk);
-    hienDSKhoa(dsk);
-    nhap1Khoa(them);
-    p=getNode(them);
-    themVaoCuoiDSKhoa(dsk,p);
-    hienDSKhoa(dsk);
-    // nhapDSSV(dssv);
+    // Khoa them;
+    // nodeKhoa*p;
+    // initKhoa(dsk);
+    // nhapDSKhoa(dsk);
+    // hienDSKhoa(dsk);
+    // nhap1Khoa(them);
+    // p=getNode(them);
+    // themVaoCuoiDSKhoa(dsk,p);
+    // hienDSKhoa(dsk);
+    nhapDSSV(dssv);
     // ghiFileSV(dssv,f);
-    // sapXepDiemTB(dssv);
-    // searchMSV(dssv);
-    // tinhDiemTrungBinh(dssv);
-    // lietKeSinhVienNu(dssv);
+    sapXepDiemTB(dssv);
+    searchMSV(dssv);
+    tinhDiemTrungBinh(dssv);
+    lietKeSinhVienNu(dssv);
 }
 
 
