@@ -582,7 +582,38 @@ void ghiFileKhoa(ListKhoa &dsk,FILE*f)
     Khoa k;
     nodeKhoa*p;
     int n=0;
-    f=fopen()
+    f=fopen("khoa.dat","wb");
+    if(p=dssv.Head;p!=NULL;p=p->next)
+    {
+        n=n+1;
+    }
+    fwrite(&n,sizeof(int),1,f);
+    for(p=dssv.Head;p!=NULL;p=p->next)
+    {
+        fwrite(&p->data,sizeof(Khoa),1,f);
+    }
+    fclose(f);
+    cout << "Ghi file khoa.dat thanh cong!"<< endl;
+  
+}
+void docFile(ListKhoa &dssv,FILE*f)
+{
+    Khoa k;
+    nodeKhoa*p;
+    int i,n=0;
+    f=fopen("khoa.dat","rb");
+    for(p=dssv.Head;p!=NULL;p=p->next)
+    {
+        n=n+1;
+    }
+    fread(&n,sizeof(int),1,f);
+    for(int i=0;i<n;++i)
+    {
+        fread(&k,sizeof(Khoa),1,f);
+    }
+    fclose(f);
+    cout << "Doc file thanh cong !!"<< endl;
+
 }
 
 int main()
