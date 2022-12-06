@@ -93,7 +93,7 @@ void nhapDSLop(ListLop &dsl)
         themVaoCuoiDSLop(dsl, p);
     }
 }
-void tieuDe()
+void tieuDeLop()
 {
     cout << left << setw(15) << "Ma Lop";
     cout << left << setw(15) << "Ten Lop";
@@ -104,7 +104,7 @@ void hienDSLop(ListLop dsl)
 {
     nodeLop *p;
     cout << "-------- Danh sach lop -------" << endl;
-    tieuDe();
+    tieuDeLop();
     for (p = dsl.Head; p != NULL; p = p->next)
     {
         hien1Lop(p->data);
@@ -577,25 +577,32 @@ void hienDSKhoa(ListKhoa dsk)
         cout << endl;
     }
 }
+void ghiFileKhoa(ListKhoa &dsk,FILE*f)
+{
+    Khoa k;
+    nodeKhoa*p;
+    int n=0;
+    f=fopen()
+}
 
 int main()
 {
     // chucNangSV();
-    Lop l;
-    nodeLop*p;
-    initLop(dsl);
-    nhapDSLop(dsl);
-    hienDSLop(dsl);
+    // Lop l;
+    // nodeLop*p;
+    // initLop(dsl);
+    // nhapDSLop(dsl);
+    // hienDSLop(dsl);
     // Khoa k;
-    // Khoa them;
-    // nodeKhoa*p;
-    // initKhoa(dsk);
-    // nhapDSKhoa(dsk);
-    // hienDSKhoa(dsk);
-    // nhap1Khoa(them);
-    // p=getNode(them);
-    // themVaoCuoiDSKhoa(dsk,p);
-    // hienDSKhoa(dsk);
+    Khoa them;
+    nodeKhoa*p;
+    initKhoa(dsk);
+    nhapDSKhoa(dsk);
+    hienDSKhoa(dsk);
+    nhap1Khoa(them);
+    p=getNode(them);
+    themVaoCuoiDSKhoa(dsk,p);
+    hienDSKhoa(dsk);
     // nhapDSSV(dssv);
     // ghiFileSV(dssv,f);
     // sapXepDiemTB(dssv);
