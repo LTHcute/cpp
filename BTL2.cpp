@@ -22,115 +22,6 @@ struct SinhVien
     Khoa khoa;
 };
 
-
-// struct node lớp
-struct nodeLop
-{
-    Lop data;
-    struct nodeLop *next;
-};
-struct ListLop
-{
-    nodeLop *Head;
-    nodeLop *Tail;
-};
-ListLop dsl;
-void initLop(ListLop &dsl)
-{
-    dsl.Head = NULL;
-    dsl.Tail = NULL;
-}
-nodeLop *getNode(Lop l)
-{
-    nodeLop *p;
-    p = new nodeLop();
-    if (p == NULL)
-    {
-        cout << "Khong du bo nho";
-        exit(1);
-    }
-    p->data = l;
-    p->next = NULL;
-    return p;
-}
-void themVaoDauDSLop(ListLop &dsl, nodeLop *p)
-{
-    if (dsl.Head == NULL)
-    {
-        dsl.Head = p;
-        dsl.Head = dsl.Tail;
-    }
-    else
-    {
-        p->next = dsl.Head;
-        dsl.Head = p;
-    }
-}
-void themVaoCuoiDSLop(ListLop &dsl, nodeLop *p)
-{
-    if (dsl.Head == NULL)
-    {
-        dsl.Head = p;
-        dsl.Head = dsl.Tail;
-    }
-    else
-    {
-        dsl.Tail->next = p;
-        dsl.Tail = p;
-    }
-}
-void nhap1Lop(Lop &l)
-{
-    cin.ignore();
-    cout << "Nhap ma lop:";
-    gets(l.maLop);
-    cout << "Nhap ten lop:";
-    gets(l.tenLop);
-    cout << "Nhap so sinh vien:";
-    cin >> l.soSinhVien;
-}
-void hien1Lop(Lop l)
-{
-    cout << left << setw(15) << l.maLop;
-    cout << left << setw(15) << l.tenLop;
-    cout << left << setw(15) << l.soSinhVien;
-}
-void nhapDSLop(ListLop &dsl)
-{
-    Lop l;
-    nodeLop *p;
-    int n;
-    cout << "Nhap so luong lop:";
-    cin >> n;
-    for (int i = 0; i < n; ++i)
-    {
-        cout << "Lop thu " << i + 1 << ":" << endl;
-        nhap1Lop(l);
-        p = getNode(l);
-        themVaoCuoiDSLop(dsl, p);
-    }
-}
-void tieuDeLop()
-{
-    cout << left << setw(15) << "Ma Lop";
-    cout << left << setw(15) << "Ten Lop";
-    cout << left << setw(15) << "So Sinh Vien";
-    cout << endl;
-}
-void hienDSLop(ListLop dsl)
-{
-    nodeLop *p;
-    cout << "-------- Danh sach lop -------" << endl;
-    tieuDeLop();
-    for (p = dsl.Head; p != NULL; p = p->next)
-    {
-        hien1Lop(p->data);
-        cout << endl;
-    }
-}
-// khai báo struct khoa
-
-
 struct nodeSV
 {
     SinhVien data;
@@ -178,16 +69,15 @@ void nhap1SV(SinhVien &sv)
     gets(sv.diaChi);
     cout << "Nhap diem trung binh:";
     cin >> sv.diemTrungBinh;
-  
+
     cin.ignore();
     cout << "Nhap ma khoa sinh vien:";
     gets(sv.khoa.maKhoa);
     cout << "Nhap ten khoa sinh vien:";
     gets(sv.khoa.tenKhoa);
-    
-    cout<<"Nhap ma lop:";
+    cout << "Nhap ma lop:";
     gets(sv.lop.maLop);
-    cout<<"Nhap ten lop:";
+    cout << "Nhap ten lop:";
     gets(sv.lop.tenLop);
     sv.lop.soSinhVien++;
     cin.ignore();
@@ -209,10 +99,10 @@ void hien1SV(SinhVien sv)
     cout << left << setw(15) << sv.SDT;
     cout << left << setw(15) << sv.diaChi;
     cout << left << setw(18) << sv.diemTrungBinh;
-    cout << left<< setw(15)<< sv.khoa.maKhoa;
-    cout << left<< setw(15)<< sv.khoa.tenKhoa;
-    cout << left<< setw(15)<< sv.lop.maLop;
-    cout << left<< setw(15)<< sv.lop.tenLop;
+    cout << left << setw(15) << sv.khoa.maKhoa;
+    cout << left << setw(15) << sv.khoa.tenKhoa;
+    cout << left << setw(15) << sv.lop.maLop;
+    cout << left << setw(15) << sv.lop.tenLop;
 }
 void themVaoDauDSSV(ListSV &dssv, nodeSV *p)
 {
@@ -323,6 +213,7 @@ void xoaSinhVienTheoMa(ListSV &dssv)
 {
     char ma[50];
     cout << "Nhap ma sinh vien ma ban muon xoa:";
+    cin.ignore();
     gets(ma);
     // trường hợp mã cần xóa ở đầu danh sách
     nodeSV *p;
@@ -405,7 +296,7 @@ void sapXepDiemTB(ListSV dssv)
 void tinhDiemTrungBinh(ListSV dssv)
 {
     nodeSV *p;
-    float sum;
+    float sum = 0;
     int count = 0;
     for (p = dssv.Head; p != NULL; p = p->next)
     {
@@ -413,6 +304,7 @@ void tinhDiemTrungBinh(ListSV dssv)
         count++;
     }
     cout << "Diem trung binh cua sinh vien :" << sum / count;
+    cout << endl;
 }
 void lietKeSinhVienNu(ListSV dssv)
 {
@@ -428,21 +320,54 @@ void lietKeSinhVienNu(ListSV dssv)
         }
     }
 }
+void lietKeSinhVienNam(ListSV dssv)
+{
+    nodeSV *p;
+    cout << "\n -------- Danh sach sinh vien nam --------" << endl;
+    tieuDeSV();
+    for (p = dssv.Head; p != NULL; p = p->next)
+    {
+        if (p->data.gioiTinh == 0)
+        {
+            hien1SV(p->data);
+            cout << endl;
+        }
+    }
+}
+void danhSachTheoKhoa(ListSV dssv)
+{
+    nodeSV *p;
+    char khoaCanTim[20];
+    cout << "Nhap ten khoa muon tim danh sach:";
+    cin.ignore();
+    gets(khoaCanTim);
+    cout << "-------- Danh sach khoa " << khoaCanTim << " --------" << endl;
+    for (p = dssv.Head; p != NULL; p = p->next)
+    {
+        if (strcmp(p->data.khoa.tenKhoa, khoaCanTim) == 0)
+        {
+            hien1SV(p->data);
+            cout << endl;
+        }
+    }
+}
 
 void menuSV()
 {
-    cout << "|------------- SINH VIEN --------------|" << endl;
-    cout << "|1.Nhap danh sach sinh vien            |" << endl;
-    cout << "|2.Hien danh sach sinh vien            |" << endl;
-    cout << "|3.Ghi file sinh vien                  |" << endl;
-    cout << "|4.Doc file sinh vien                  |" << endl;
-    cout << "|5.Them sinh vien vao danh sach        |" << endl;
-    cout << "|6.Sap xep danh sach sinh vien         |" << endl;
-    cout << "|7.Tim kiem sinh vien theo ma sinh vien|" << endl;
-    cout << "|8.Xoa sinh vien theo ma sinh vien     |" << endl;
-    cout << "|9.Tinh diem trung binh cua sinh vien  |" << endl;
-    cout << "|10.Liet ke danh sach sinh vien nu     |" << endl;
-    cout << "|0.Thoat                               |" << endl;
+    cout << "|-------------------- SINH VIEN -------------------|" << endl;
+    cout << "|1.Nhap danh sach sinh vien                        |" << endl;
+    cout << "|2.Hien danh sach sinh vien                        |" << endl;
+    cout << "|3.Ghi file sinh vien                              |" << endl;
+    cout << "|4.Doc file sinh vien                              |" << endl;
+    cout << "|5.Them sinh vien vao danh sach                    |" << endl;
+    cout << "|6.Sap xep danh sach sinh vien                     |" << endl;
+    cout << "|7.Tim kiem sinh vien theo ma sinh vien            |" << endl;
+    cout << "|8.Xoa sinh vien theo ma sinh vien                 |" << endl; // k xóa được
+    cout << "|9.Tinh diem trung binh cua sinh vien              |" << endl;
+    cout << "|10.Liet ke danh sach sinh vien nu                 |" << endl;
+    cout << "|11.Liet ke danh sach sinh vien nam                |" << endl;
+    cout << "|12.Danh sach sinh vien cua khoa nhap vao          |" << endl; // chưa hiện
+    cout << "|0.Thoat                                           |" << endl;
 }
 void chucNangSV()
 {
@@ -452,7 +377,7 @@ void chucNangSV()
     initSV(dssv);
     int option;
 
-    while (option != 0)
+    while (true)
     {
         menuSV();
         cout << "Nhap su lua chon cua ban:";
@@ -470,6 +395,7 @@ void chucNangSV()
             break;
         case 4:
             docFileSV(dssv, f);
+            hienDSSV(dssv);
             break;
         case 5:
             nhap1SV(sv);
@@ -494,6 +420,14 @@ void chucNangSV()
         case 10:
             lietKeSinhVienNu(dssv);
             break;
+        case 11:
+            lietKeSinhVienNam(dssv);
+            break;
+        case 12:
+            danhSachTheoKhoa(dssv);
+            break;
+        case 0:
+            exit(1);
         default:
             cout << "Moi ban chon lai !" << endl;
             break;
@@ -501,171 +435,9 @@ void chucNangSV()
     }
 }
 
-struct nodeKhoa
-{
-    Khoa data;
-    struct nodeKhoa *next;
-};
-struct ListKhoa
-{
-    nodeKhoa *Head;
-    nodeKhoa *Tail;
-};
-ListKhoa dsk;
-void initKhoa(ListKhoa &dsk)
-{
-    dsk.Head = NULL;
-    dsk.Tail = NULL;
-}
-nodeKhoa *getNode(Khoa k)
-{
-    nodeKhoa *p;
-    p = new nodeKhoa();
-    if (p == NULL)
-    {
-        cout << "Khong du bo nho";
-        exit(1);
-    }
-    p->data = k;
-    p->next = NULL;
-    return p;
-}
-void themVaoDauDSKhoa(ListKhoa &dsk, nodeKhoa *p)
-{
-    if (dsk.Head == NULL)
-    {
-        dsk.Head = p;
-        dsk.Tail = dsk.Head;
-    }
-    else
-    {
-        p->next = dsk.Head;
-        dsk.Head = p;
-    }
-}
-void themVaoCuoiDSKhoa(ListKhoa &dsk, nodeKhoa *p)
-{
-    if (dsk.Head == NULL)
-    {
-        dsk.Head = p;
-        dsk.Tail = dsk.Head;
-    }
-    else
-    {
-        dsk.Tail->next = p;
-        dsk.Tail = p;
-    }
-}
-void nhap1Khoa(Khoa &k)
-{
-    cin.ignore();
-    cout << "Nhap ma khoa:";
-    gets(k.maKhoa);
-    cout << "Nhap ten khoa:";
-    gets(k.tenKhoa);
-}
-void hien1Khoa(Khoa k)
-{
-    cout << left << setw(15) << k.maKhoa;
-    cout << left << setw(15) << k.tenKhoa;
-}
-void nhapDSKhoa(ListKhoa &dsk)
-{
-    Khoa k;
-    nodeKhoa *p;
-    cout << "Nhap so luong khoa:";
-    int n;
-    cin >> n;
-    for (int i = 0; i < n; ++i)
-    {
-        cout << "Nhap khoa thu " << i + 1 << ":" << endl;
-        nhap1Khoa(k);
-        p = getNode(k);
-        themVaoCuoiDSKhoa(dsk, p);
-    }
-}
-void tieuDeKhoa()
-{
-    cout << left << setw(15) << "Ma Khoa";
-    cout << left << setw(15) << "Ten Khoa";
-    cout << endl;
-}
-void hienDSKhoa(ListKhoa dsk)
-{
-    nodeKhoa *p;
-    cout << "----- Danh sach khoa -----" << endl;
-    tieuDeKhoa();
-    for (p = dsk.Head; p != NULL; p = p->next)
-    {
-        hien1Khoa(p->data);
-        cout << endl;
-    }
-}
-void ghiFileKhoa(ListKhoa &dsk,FILE*f)
-{
-    Khoa k;
-    nodeKhoa*p;
-    int n=0;
-    f=fopen("khoa.dat","wb");
-    if(p=dssv.Head;p!=NULL;p=p->next)
-    {
-        n=n+1;
-    }
-    fwrite(&n,sizeof(int),1,f);
-    for(p=dssv.Head;p!=NULL;p=p->next)
-    {
-        fwrite(&p->data,sizeof(Khoa),1,f);
-    }
-    fclose(f);
-    cout << "Ghi file khoa.dat thanh cong!"<< endl;
-  
-}
-void docFile(ListKhoa &dssv,FILE*f)
-{
-    Khoa k;
-    nodeKhoa*p;
-    int i,n=0;
-    f=fopen("khoa.dat","rb");
-    for(p=dssv.Head;p!=NULL;p=p->next)
-    {
-        n=n+1;
-    }
-    fread(&n,sizeof(int),1,f);
-    for(int i=0;i<n;++i)
-    {
-        fread(&k,sizeof(Khoa),1,f);
-    }
-    fclose(f);
-    cout << "Doc file thanh cong !!"<< endl;
-
-}
-
 int main()
 {
-    // chucNangSV();
-    // Lop l;
-    // nodeLop*p;
-    // initLop(dsl);
-    // nhapDSLop(dsl);
-    // hienDSLop(dsl);
-    // Khoa k;
-    // Khoa them;
-    // nodeKhoa*p;
-    // initKhoa(dsk);
-    // nhapDSKhoa(dsk);
-    // hienDSKhoa(dsk);
-    // nhap1Khoa(them);
-    // p=getNode(them);
-    // themVaoCuoiDSKhoa(dsk,p);
-    // hienDSKhoa(dsk);
-    nhapDSSV(dssv);
-    // ghiFileSV(dssv,f);
-    sapXepDiemTB(dssv);
-    searchMSV(dssv);
-    tinhDiemTrungBinh(dssv);
-    lietKeSinhVienNu(dssv);
+    chucNangSV();
 }
-
-
 
 // thanhkute sua dong nay
