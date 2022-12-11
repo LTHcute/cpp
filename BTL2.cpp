@@ -38,6 +38,8 @@ void initSV(ListSV &dssv)
     dssv.Head = NULL;
     dssv.Tail = NULL;
 }
+
+// cấp phát động một node với dữ liệu sinh viên
 nodeSV *getnode(SinhVien sv)
 {
     nodeSV *p;
