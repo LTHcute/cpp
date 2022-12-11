@@ -559,6 +559,19 @@ void danhSachtheoLop(ListSV dssv)
     }
 }
 
+void sapXepGiamDanTheoTen(ListSV &dssv) {
+    for(nodeSV *k = dssv.Head; k!=NULL; k=k->next) {
+        for(nodeSV *p=k->next; p!=NULL; p=p->next) {
+            if(strcmp(p->data.hoTen, k->data.hoTen) > 0)
+            {
+                SinhVien new_sv = p->data;
+                p->data=k->data;
+                k->data = new_sv;
+            }
+        }
+    }
+}
+
 void menuSV()
 {
     cout << "|------------------------- SINH VIEN ----------------------|" << endl;
@@ -583,6 +596,7 @@ void menuSV()
     cout << "|19.Them sinh vien vao sau sinh vien khac trong danh sach  |"<<endl;   // done
     cout << "|20.Xoa sinh vien dau danh sach                            |"<<endl;
     cout << "|21.Xoa sinh vien cuoi danh sach                           |"<<endl;
+    cout << "|22.Sap xep giam dan theo ho sinh vien                     |" << endl;
     cout << "|0.Thoat                                                   |" << endl;
     cout << "|----------------------------------------------------------|" << endl;
 }
@@ -671,6 +685,10 @@ void chucNangSV()
             break;
         case 21:
             removeHead(dssv);
+            hienDSSV(dssv);
+            break;
+        case 22:
+            sapXepGiamDanTheoTen(dssv);
             hienDSSV(dssv);
             break;
         case 0:
