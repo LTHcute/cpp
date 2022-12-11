@@ -584,6 +584,7 @@ void menuSV()
     cout << "|20.Xoa sinh vien dau danh sach                            |"<<endl;
     cout << "|21.Xoa sinh vien cuoi danh sach                           |"<<endl;
     cout << "|0.Thoat                                                   |" << endl;
+    cout << "|----------------------------------------------------------|" << endl;
 }
 void chucNangSV()
 {
