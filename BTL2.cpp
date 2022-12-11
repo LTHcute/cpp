@@ -1,4 +1,6 @@
-#include <bits/stdc++.h>
+// #include <bits/stdc++.h>
+#include <iostream>
+#include <iomanip>
 using namespace std;
 // khai báo struct lop
 struct Lop
