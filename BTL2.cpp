@@ -35,6 +35,7 @@ struct ListSV
     nodeSV *Tail;
 };
 ListSV dssv;
+ListSV dssvThi;
 void initSV(ListSV &dssv)
 {
     dssv.Head = NULL;
@@ -138,12 +139,13 @@ void themVaoCuoiDSSV(ListSV &dssv, nodeSV *p)
 }
 
 // so sinh vien trong dssv
-int Size(ListSV dssv) {
+int Size(ListSV &dssv) {
     int cnt = 0;
     while(dssv.Head != NULL) {
         ++cnt;
         dssv.Head = dssv.Head->next;
     }
+    cout<<"So luong la : "<<cnt<<endl;
     return cnt;
 }
 
@@ -269,6 +271,25 @@ void docFileSV(ListSV &dssv, FILE *f)
     }
     fclose(f);
     cout << "Doc file sinhvien.dat thanh cong!!!" << endl;
+}
+
+void ghiFileSVOutput(ListSV &dssv, FILE *f)
+{
+    SinhVien sv;
+    nodeSV *p;
+    int n = 0;
+    f = fopen("output.dat", "wb");
+    for (p = dssv.Head; p != NULL; p = p->next)
+    {
+        n = n + 1;
+    }
+    fwrite(&n, sizeof(int), 1, f);
+    for (p = dssv.Head; p != NULL; p = p->next)
+    {
+        fwrite(&p->data, sizeof(SinhVien), 1, f);
+    }
+    fclose(f);
+    cout << "Ghi file thanh cong!" << endl;
 }
 
 // xoa phan tu dau
@@ -397,13 +418,16 @@ void dtbThapNhat(ListSV &dssv) {
 
 
 // tìm theo mã sinh viên
-nodeSV *searchMSV(ListSV dssv)
+nodeSV *searchMSV(ListSV dssv, ListSV &dssvThi, FILE *f)
 {
     cin.ignore();
     int cnt = 0;
     cout << "Nhap ma sinh vien ban muon tim:";
     char msv[20];
     gets(msv);
+    
+    // ListSV *tmp;
+
     nodeSV *p;
     for (p = dssv.Head; p != NULL; p = p->next)
     {
@@ -411,6 +435,12 @@ nodeSV *searchMSV(ListSV dssv)
         {
             tieuDeSV();
             hien1SV(p->data);
+            p->next = NULL;
+            if(cnt < 1) {
+                dssvThi.Head = p;
+            } else {
+                dssvThi.Tail->next = p;
+            }
             cnt++;
             cout<<endl;
             break;
@@ -419,9 +449,34 @@ nodeSV *searchMSV(ListSV dssv)
     if(cnt == 0) {
         cout<<"Khong tim thay sinh vien"<<endl;
     }
+    ghiFileSVOutput(dssvThi,f);
 }
+
+void docFileOutput(ListSV &dssv, FILE *f) {
+    cout<<"co vao"<<endl;
+    nodeSV *p;
+
+    SinhVien sv;
+    int i, n = 0;
+    f = fopen("output.dat", "rb");
+    for (p = dssv.Head; p != NULL; p = p->next)
+    {
+        n = n + 1;
+    }
+    fread(&n, sizeof(int), 1, f);
+    for (int i = 0; i < n; i++)
+    {
+        fread(&sv, sizeof(SinhVien), 1, f);
+        p = getnode(sv);
+        themVaoCuoiDSSV(dssv, p);
+    }
+    fclose(f);
+    cout << "Doc file output.dat thanh cong!!!" << endl;
+}
+
+
 // tìm theo tên sinh viên
-nodeSV *searchTenSV(ListSV dssv)
+nodeSV searchTenSV(ListSV dssv)
 {
     cin.ignore();
     cout << "Nhap ten sinh vien ban muon tim:";
@@ -576,31 +631,31 @@ void sapXepGiamDanTheoTen(ListSV &dssv) {
 
 void menuSV()
 {
-    cout << "|------------------------- SINH VIEN ----------------------|" << endl;
-    cout << "|1.Nhap danh sach sinh vien                                |" << endl;
-    cout << "|2.Hien danh sach sinh vien                                |" << endl;
-    cout << "|3.Ghi file sinh vien                                      |" << endl;
-    cout << "|4.Doc file sinh vien                                      |" << endl;
-    cout << "|5.Them sinh vien vao dau danh sach                        |" << endl; // done
-    cout << "|6.Them sinh vien vao cuoi danh sach                       |" << endl; // done
-    cout << "|7.Sap xep danh sach sinh vien giam dan theo diem          |" << endl; // done
-    cout << "|8.Sap xep danh sach sinh vien tang dan theo diem          |" << endl; // done
-    cout << "|9.Tim kiem sinh vien theo ma sinh vien                    |" << endl;
-    cout << "|10.Tim kiem sinh vien theo ten sinh vien                  |" << endl;
-    cout << "|11.Xoa sinh vien theo ma sinh vien                        |" << endl; // done
-    cout << "|12.Tinh diem trung binh cua sinh vien                     |" << endl; // done
-    cout << "|13.Liet ke danh sach sinh vien nu                         |" << endl; // done
-    cout << "|14.Liet ke danh sach sinh vien nam                        |" << endl; // done
-    cout << "|15.Danh sach sinh vien cua ma khoa nhap vao               |" << endl; // done
-    cout << "|16.Danh sach vien cua lop nhap vao                        |" << endl; // done
-    cout << "|17.Danh sach sinh vien co diem trung binh cao nhat        |" << endl; // done
-    cout << "|18.Danh sach sinh vien co diem trung binh thap nhat       |" << endl; // done
-    cout << "|19.Them sinh vien vao sau sinh vien khac trong danh sach  |"<<endl;   // done
-    cout << "|20.Xoa sinh vien dau danh sach                            |"<<endl;
-    cout << "|21.Xoa sinh vien cuoi danh sach                           |"<<endl;
-    cout << "|22.Sap xep giam dan theo ho sinh vien                     |" << endl;
-    cout << "|0.Thoat                                                   |" << endl;
-    cout << "|----------------------------------------------------------|" << endl;
+    cout << "|------------------------------------- SINH VIEN ----------------------------------|" << endl;
+    cout << "|1.Nhap danh sach sinh vien                                                        |" << endl;
+    cout << "|2.Hien danh sach sinh vien                                                        |" << endl;
+    cout << "|3.Ghi file sinh vien                                                              |" << endl;
+    cout << "|4.Doc file sinh vien                                                              |" << endl;
+    cout << "|5.Them sinh vien vao dau danh sach                                                |" << endl; // done
+    cout << "|6.Them sinh vien vao cuoi danh sach                                               |" << endl; // done
+    cout << "|7.Sap xep danh sach sinh vien giam dan theo diem                                  |" << endl; // done
+    cout << "|8.Sap xep danh sach sinh vien tang dan theo diem                                  |" << endl; // done
+    cout << "|9.Tim kiem sinh vien theo ma sinh vien                                            |" << endl;
+    cout << "|10.Tim kiem sinh vien theo ten sinh vien                                          |" << endl;
+    cout << "|11.Xoa sinh vien theo ma sinh vien                                                |" << endl; // done
+    cout << "|12.Tinh diem trung binh cua sinh vien                                             |" << endl; // done
+    cout << "|13.Liet ke danh sach sinh vien nu                                                 |" << endl; // done
+    cout << "|14.Liet ke danh sach sinh vien nam                                                |" << endl; // done
+    cout << "|15.Danh sach sinh vien cua ma khoa nhap vao                                       |" << endl; // done
+    cout << "|16.Danh sach vien cua lop nhap vao                                                |" << endl; // done
+    cout << "|17.Them sinh vien vao sau sinh vien khac trong danh sach                          |"<<endl;   // done
+    cout << "|18.Xoa sinh vien dau danh sach                                                    |"<<endl;
+
+    cout << "|19. Tim kiem sinh vien theo ma sinh vien va ghi tep output.dat                    |"<<endl;
+    cout << "|20. doc file output.dat                                                           |"<<endl;
+    cout << "|21. so luong ban ghi cua output.dat                                               |"<<endl;
+    cout << "|0.Thoat                                                                           |" << endl;
+    cout << "|----------------------------------------------------------                        |" << endl;
 }
 void chucNangSV()
 {
@@ -608,6 +663,7 @@ void chucNangSV()
     SinhVien sv;
     nodeSV *p;
     initSV(dssv);
+    initSV(dssvThi);
     int option;
     while (true)
     {
@@ -648,7 +704,7 @@ void chucNangSV()
             sapXepDiemTBTang(dssv);
             break;
         case 9:
-            searchMSV(dssv);
+            // searchMSV(dssv);
             break;
         case 10:
             searchTenSV(dssv);
@@ -671,25 +727,37 @@ void chucNangSV()
         case 16:
             danhSachtheoLop(dssv);
             break;
-        case 17:
+        case 171:
             dtbCaoNhat(dssv);
             break;
-        case 18:
+        case 181:
             dtbThapNhat(dssv);
             break;
-        case 19:
+        case 17:
             themVaoGiuaDSSV(dssv);
             hienDSSV(dssv);
             break;
-        case 20:
+        case 18:
             removeTail(dssv);
             hienDSSV(dssv);
             break;
+        case 19:
+            docFileSV(dssv,f);
+            hienDSSV(dssv);
+            searchMSV(dssv, dssvThi, f);
+            break;
+        case 20:
+            docFileOutput(dssvThi,f);
+            hienDSSV(dssvThi);
+            break;
         case 21:
+            Size(dssvThi);
+            break;
+        case 211:
             removeHead(dssv);
             hienDSSV(dssv);
             break;
-        case 22:
+        case 221:
             sapXepGiamDanTheoTen(dssv);
             hienDSSV(dssv);
             break;
